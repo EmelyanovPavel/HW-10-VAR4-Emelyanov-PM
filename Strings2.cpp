@@ -1,35 +1,43 @@
-//Task 1.
+//Homework 10.
 #include <algorithm>
 #include <iostream>
 #include <sstream>
 #include <string>
-#include <vector>
 
+//Task 1.
 //Complex actions with strings.A meaningful text message is given(i.e.
 //    alphanumeric information separated by spaces and
 //    punctuation marks, with a dot at the end).Perform the work
 //    using the std::string class.
-//    4. Display all the palindrome words contained in the specified
-//    message.
+//4. Display all the palindrome words contained in the specified
+//message.
 
-void task1() {
-    std::string yourString, word;
-    std::vector <string> palindromes;
-    std::cout << "Enter a string: " << std::endl;
-    std::getline(cin, yourString);
-    std::stringstream streamForString(yourString);
-    while (streamForString >> word) {
-        std::string invertWord(word);
-        std::reverse(invertWord.begin(), invertWord.end());
-        if ((!word.compare(invertWord)) && (word.size() > 1)) {
-            std::palindromes.push_back(word);
+bool isPalindrome(std::string str)
+{
+    for (int left = 0, right = str.length() - 1; left < right; left++, right--) //go to the middle
+        if (str[left] != str[right]) //check for symmetry
+            return false;
+    return true;
+}
+
+void task1()
+{
+    //declaring a variable
+    std::string str;
+
+    //getting a string
+    std::getline(std::cin, str);
+
+    //turning a string into a stream
+    std::istringstream ist(str);
+
+    while (ist >> str) {
+        //reading the stream
+        if (isPalindrome(str)) { //finding a palindrome
+            std::cout << str << " "; //output a palindrome words
         }
     }
-    if (palindromes.empty()) std::cout << "There are no palindromes in the string. ";
-    else {
-        std::cout << "Palindromes number: " << palindromes.size() << std::endl;
-        for (unsigned int i = 0; i < palindromes.size(); i++) std::cout << " - " << palindromes[i] << std::endl;
-    }
+    std::cout << std::endl;
 }
 
 int main()
