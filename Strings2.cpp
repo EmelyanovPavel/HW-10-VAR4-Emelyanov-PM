@@ -2,69 +2,82 @@
 #include <iostream>
 #include <string>
 
-//Complex actions with strings.A meaningful text message is given(i.e.
+// Complex actions with strings. A meaningful text message is given(i.e.
 //    alphanumeric information separated by spaces and
 //    punctuation marks, with a dot at the end).Perform the work
 //    using the std::string class.
 //4. Display all the palindrome words contained in the specified message.
 
-bool isPalindrome(std::string word) 
+// Palindrome checking function without copying a string
+bool isPalindrome(const std::string& word) 
 {
-    std::string::const_iterator left = word.begin();
-    std::string::const_iterator right = word.end() - 1;
+    std::string::size_type left = 0;
+    std::string::size_type right = word.length() - 1;
     
     while (left < right) 
     {
-        if (*left != *right) 
+        if (word[left] != word[right]) 
         {
             return false;
         }
+        
         left++;
         right--;
     }
+    
     return true;
 }
 
 void task1() 
 {
     std::string message;
-    std::cout << "Enter the string: ";
-    std::getline(std::cin, message);
+    std::cout << "Enter a message: ";
+    getline(std::cin, message);
     
-    std::string currentWord = "";
-    bool isWord = false;
+    std::string::size_type start = 0;
+    std::string::size_type end = 0;
     
-    std::cout << "The palindrome words: " << std::endl;
+    std::cout << "Palindromes in the message: " << std::endl;
     
-    int i = 0;
-    while (i < message.length()) 
+    while (start < message.length()) 
     {
-        if (isalpha(message[i])) 
+        
+        // Finding the beginning of a word
+        while (start < message.length() && !isalpha(message[start])) 
         {
-            currentWord += tolower(message[i]);
-            isWord = true;
+            start++;
         }
-        else if (isWord) 
+        
+        // Finding the end of a word
+        end = start;
+        while (end < message.length() && isalpha(message[end])) 
         {
-            if (isPalindrome(currentWord)) 
+            end++;
+        }
+        
+        //  Checking if found the word
+        if (start < message.length()) 
+        {
+            
+            // Checking the palindrome without copying the string
+            std::string::size_type length = end - start;
+            if (isPalindrome(message.substr(start, length))) 
             {
-                std::cout << currentWord << std::endl;
-            }
-            currentWord = "";
-            isWord = false;
-        }
-        i++;
+                
+                std::cout << message.substr(start, length) << std::endl;
+                
+            } 
+            start = end;
+            
+        } 
+        
     }
-    
-    //Checking the last word
-    if (isWord && isPalindrome(currentWord)) 
-    {
-        std::cout << currentWord << std::endl;
-    }
+    std::cout << std::endl;
 }
 
 int main()
 {
     task1();
+    
     return 0;
 }
